@@ -6,13 +6,13 @@ class YouTubeEmbedField(models.URLField):
     description = 'YouTube embed field'
 
     def to_python(self, value):
-        youtube_embed_url = 'https://youtube.com/embed/'
+        youtube_embed_url_template = 'https://youtube.com/embed/%s'
 
-        if value and not value.startswith(youtube_embed_url):
+        if value and not value.startswith(youtube_embed_url[:-2]):
             parsed_url = urlparse.urlparse(value)
             parse_qs = urlparse.parse_qs(parsed_url.query)
             youtube_id = parse_qs['v'][0]
-            return '%s%s' % (youtube_embed_url, youtube_id)
+            return youtube_embed_url_template % youtube_id
 
         return value
 
